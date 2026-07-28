@@ -1,32 +1,46 @@
 === QR Code Generator ===
 Contributors: m-riaz
-Tags: qr code, qr generator, qrcode, shortcode, download qr
+Tags: qr code, qr generator, qrcode, shortcode, logo qr
 Requires at least: 5.0
 Tested up to: 6.5
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Drop a live QR code generator onto any page or post with a shortcode. Visitors type a URL or text and download the code as PNG or SVG.
+Add a designer QR code generator to any page. Styled dots, rounded eyes, colour gradients, and a centre logo - download as PNG or SVG.
 
 == Description ==
 
-QR Code Generator adds a `[qr_generator]` shortcode that renders an interactive QR code widget anywhere on your WordPress site. Your visitors type in a link or any text and instantly get a scannable QR code they can download.
+QR Code Generator adds a `[qr_generator]` shortcode that renders an interactive, Canva-style QR code designer anywhere on your WordPress site. Visitors type a link or text, pick a look, and download a scannable QR code as PNG or SVG.
 
-Everything runs in the visitor's browser using a bundled, MIT-licensed QR library. No data is ever sent to a third-party service, and no API keys are required.
+Everything runs in the visitor's browser using the bundled, MIT-licensed qr-code-styling library. No data is ever sent to a third-party service and no API keys are required.
 
-= Features =
+= Design features =
 
-* Simple `[qr_generator]` shortcode - works in the Classic editor, the Block editor (Shortcode block), and widgets.
-* 100% client-side generation - private and fast, with no external requests.
+* One-click style templates: Classic, Rounded, Dots, Elegant, Bold, Ocean.
+* Six dot styles (square, rounded, dots, classy, classy rounded, extra rounded).
+* Three eye (finder pattern) styles (square, rounded, dot).
+* Solid colour **or** linear / radial gradient fills.
+* Custom foreground and background colours, plus a transparent background option.
+* Upload a **centre logo** - the plugin automatically switches to the highest error-correction level and clears the space behind it so the code still scans.
+* Adjustable size and error-correction level.
 * Live preview that updates as you type.
-* Download as **PNG** (raster) or **SVG** (infinitely scalable).
-* Customisable size, error-correction level, and foreground / background colours.
-* Full UTF-8 support (works with non-Latin text and emoji).
-* Multiple generators on the same page.
+* Download as **PNG** or scalable **SVG**.
+
+= Built to stay scannable =
+
+* A standard quiet zone is always kept around the code.
+* Logos are size-limited and sit on a clear background patch.
+* A gentle warning appears if colour contrast is low or a logo is too large.
+
+= Other features =
+
+* Full UTF-8 support (non-Latin scripts and emoji).
+* Multiple independent generators per page.
 * Responsive, accessible markup with light and dark mode styles.
 * Lightweight: assets only load on pages that actually use the shortcode.
+* 100% client-side - private, fast, and offline once the page has loaded.
 
 == Installation ==
 
@@ -42,25 +56,35 @@ Basic:
 
 With attributes:
 
-`[qr_generator title="Scan me" content="https://example.com" size="360" ecl="H" fg="#0a0a0a" bg="#ffffff" controls="yes" download="yes"]`
+`[qr_generator title="Scan me" content="https://example.com" template="elegant" size="360" dot="rounded" eye="rounded" gradient="linear" fg="#4f46e5" fg2="#9333ea" bg="#ffffff"]`
 
 = Shortcode attributes =
 
-* `title` - Heading shown above the widget. Leave empty to hide it. Default: "QR Code Generator".
+* `title` - Heading above the widget (empty to hide). Default: "QR Code Generator".
 * `content` - Pre-filled text or URL. Default: empty.
 * `placeholder` - Placeholder text for the input. Default: "https://example.com".
-* `size` - Initial output size in pixels (100-1000). Default: 300.
-* `ecl` - Error-correction level: `L`, `M`, `Q`, or `H`. Higher survives more damage but stores less. Default: `M`.
-* `fg` - Foreground (module) colour as a hex value. Default: `#000000`.
-* `bg` - Background colour as a hex value. Default: `#ffffff`.
-* `controls` - `yes` to show the size / error-correction / colour controls, `no` to hide them. Default: `yes`.
-* `download` - `yes` to show the PNG/SVG download buttons, `no` to hide them. Default: `yes`.
+* `template` - Starting look: `classic`, `rounded`, `dots`, `elegant`, `bold`, `ocean`, or `none`. Default: `none`.
+* `size` - Initial output size in pixels (120-1000). Default: 320.
+* `dot` - Dot style: `square`, `rounded`, `dots`, `classy`, `classy-rounded`, `extra-rounded`. Default: `rounded`.
+* `eye` - Eye (finder) style: `square`, `rounded`, `dot`. Default: `rounded`.
+* `gradient` - Fill: `none`, `linear`, or `radial`. Default: `none`.
+* `fg` - Foreground colour (gradient start), hex. Default: `#1a1a2e`.
+* `fg2` - Gradient end colour, hex. Default: `#7c3aed`.
+* `bg` - Background colour (hex) or `transparent`. Default: `#ffffff`.
+* `logosize` - Centre logo size as a percentage of the code (10-40). Default: 25.
+* `ecl` - Error-correction level: `L`, `M`, `Q`, `H`. Default: `M` (forced to `H` when a logo is used).
+* `controls` - Show the customisation controls (`yes`/`no`). Default: `yes`.
+* `download` - Show the PNG/SVG download buttons (`yes`/`no`). Default: `yes`.
 
 == Frequently Asked Questions ==
 
 = Does this send data to an external server? =
 
 No. QR codes are generated entirely in the visitor's browser. Nothing is transmitted anywhere.
+
+= Will a styled QR code with a logo still scan? =
+
+Yes, within reason. The plugin keeps a quiet zone, raises error correction to the highest level when a logo is present, and clears the area behind the logo. Very low contrast colours or an oversized logo can still hurt scanning, so a warning is shown and you should always test the code with a phone before sharing it.
 
 = Can I use it on WordPress.com? =
 
@@ -70,15 +94,17 @@ The plugin requires the ability to upload plugins, which is available on WordPre
 
 Yes. Each `[qr_generator]` instance is independent.
 
-= Why does very long text fail? =
-
-QR codes have a maximum capacity. If the content is too long the widget shows a message asking you to shorten it. Lowering the error-correction level (`ecl="L"`) increases capacity.
-
 == Changelog ==
 
+= 2.0.0 =
+* Redesigned as a Canva-style QR designer: style templates, dot/eye styles, gradients, and centre-logo upload.
+* Switched the rendering engine to qr-code-styling.
+* Added scannability safeguards (quiet zone, auto error correction with logos, contrast/logo warnings).
+* Two-column layout with live preview and PNG/SVG download.
+
 = 1.0.0 =
-* Initial release.
+* Initial release: basic [qr_generator] shortcode with PNG/SVG download.
 
 == Credits ==
 
-QR encoding is powered by the qrcode-generator library by Kazuhiko Arase, distributed under the MIT license.
+QR rendering is powered by the qr-code-styling library by Denys Kozak, distributed under the MIT license.

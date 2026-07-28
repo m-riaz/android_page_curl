@@ -20,7 +20,8 @@ https://www.gnu.org/licenses/gpl-2.0.html
 Third-party components
 --------------------------------------------------------------------------------
 
-assets/js/vendor/qrcode.js
-  QR Code Generator for JavaScript
-  Copyright (c) 2009 Kazuhiko Arase
+assets/js/vendor/qr-code-styling.js
+  QR Code Styling
+  Copyright (c) 2019 Denys Kozak
   Licensed under the MIT license: https://opensource.org/licenses/mit-license.php
+  Full text: assets/js/vendor/qr-code-styling.LICENSE

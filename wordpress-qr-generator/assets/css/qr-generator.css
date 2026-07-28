@@ -2,7 +2,8 @@
  * QR Code Generator - front-end styles.
  *
  * Scoped under .qrcg so the widget blends into most themes without leaking
- * styles. Uses CSS custom properties for easy theme overrides.
+ * styles. Two-column layout: controls on the left, live preview on the right.
+ * Uses CSS custom properties for easy theme overrides.
  *
  * @package QR_Code_Generator
  */
@@ -10,16 +11,17 @@
 .qrcg {
 	--qrcg-border: #e2e4e7;
 	--qrcg-bg: #ffffff;
+	--qrcg-panel: #f7f8fa;
 	--qrcg-text: #1e1e1e;
 	--qrcg-muted: #6c7781;
-	--qrcg-accent: #2271b1;
+	--qrcg-accent: #7c3aed;
 	--qrcg-accent-text: #ffffff;
-	--qrcg-radius: 8px;
+	--qrcg-radius: 12px;
 
 	box-sizing: border-box;
-	max-width: 640px;
+	max-width: 820px;
 	margin: 1.5em auto;
-	padding: 20px;
+	padding: 22px;
 	border: 1px solid var(--qrcg-border);
 	border-radius: var(--qrcg-radius);
 	background: var(--qrcg-bg);
@@ -35,29 +37,44 @@
 }
 
 .qrcg__title {
-	margin: 0 0 0.75em;
-	font-size: 1.25em;
+	margin: 0 0 1rem;
+	font-size: 1.3em;
 	line-height: 1.3;
 }
 
-.qrcg__field {
-	margin-bottom: 1em;
+.qrcg__layout {
+	display: grid;
+	grid-template-columns: 1fr 300px;
+	gap: 24px;
+	align-items: start;
 }
 
-.qrcg__label,
-.qrcg__control label {
+@media (max-width: 680px) {
+	.qrcg__layout {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ------------------------------------------------------------------ Form */
+
+.qrcg__field {
+	margin-bottom: 1rem;
+}
+
+.qrcg__label {
 	display: block;
 	margin-bottom: 0.35em;
-	font-size: 0.85em;
+	font-size: 0.82em;
 	font-weight: 600;
+	letter-spacing: 0.01em;
 	color: var(--qrcg-muted);
 }
 
 .qrcg__input {
 	width: 100%;
-	padding: 10px 12px;
+	padding: 11px 13px;
 	border: 1px solid var(--qrcg-border);
-	border-radius: 6px;
+	border-radius: 8px;
 	font-family: inherit;
 	font-size: 1em;
 	line-height: 1.4;
@@ -70,24 +87,76 @@
 .qrcg__select:focus,
 .qrcg__range:focus,
 .qrcg__color:focus,
-.qrcg__btn:focus {
+.qrcg__chip:focus,
+.qrcg__btn:focus,
+.qrcg__file:focus {
 	outline: 2px solid var(--qrcg-accent);
 	outline-offset: 1px;
 }
 
+/* Template chips */
+
+.qrcg__templates {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.qrcg__chip {
+	padding: 7px 14px;
+	border: 1px solid var(--qrcg-border);
+	border-radius: 999px;
+	background: #fff;
+	color: var(--qrcg-text);
+	font-family: inherit;
+	font-size: 0.85em;
+	font-weight: 600;
+	cursor: pointer;
+	transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.qrcg__chip:hover {
+	border-color: var(--qrcg-accent);
+}
+
+.qrcg__chip.is-active {
+	background: var(--qrcg-accent);
+	border-color: var(--qrcg-accent);
+	color: var(--qrcg-accent-text);
+}
+
+/* Control grid */
+
 .qrcg__controls {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	grid-template-columns: repeat(2, 1fr);
 	gap: 14px;
-	margin-bottom: 1.25em;
-	padding: 14px;
+	padding: 16px;
 	border: 1px solid var(--qrcg-border);
-	border-radius: 6px;
-	background: rgba(0, 0, 0, 0.015);
+	border-radius: 10px;
+	background: var(--qrcg-panel);
+}
+
+@media (max-width: 420px) {
+	.qrcg__controls {
+		grid-template-columns: 1fr;
+	}
 }
 
 .qrcg__control {
 	min-width: 0;
+}
+
+.qrcg__control label {
+	display: block;
+	margin-bottom: 0.35em;
+	font-size: 0.8em;
+	font-weight: 600;
+	color: var(--qrcg-muted);
+}
+
+.qrcg__control--logo {
+	grid-column: 1 / -1;
 }
 
 .qrcg__size-value {
@@ -99,58 +168,97 @@
 .qrcg__range {
 	width: 100%;
 	margin: 0;
+	accent-color: var(--qrcg-accent);
 }
 
 .qrcg__select {
 	width: 100%;
-	padding: 8px 10px;
+	padding: 9px 10px;
 	border: 1px solid var(--qrcg-border);
-	border-radius: 6px;
+	border-radius: 8px;
 	font-family: inherit;
-	font-size: 0.95em;
+	font-size: 0.92em;
 	background: #fff;
 	color: var(--qrcg-text);
 }
 
-.qrcg__control--color {
-	display: flex;
-	flex-direction: column;
-}
-
 .qrcg__color {
 	width: 100%;
-	height: 38px;
+	height: 40px;
 	padding: 2px;
 	border: 1px solid var(--qrcg-border);
-	border-radius: 6px;
+	border-radius: 8px;
 	background: #fff;
 	cursor: pointer;
 }
 
+.qrcg__checkbox {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-top: 6px;
+	font-size: 0.78em;
+	font-weight: 400;
+	color: var(--qrcg-muted);
+	cursor: pointer;
+}
+
+.qrcg__checkbox input {
+	margin: 0;
+}
+
+.qrcg__file {
+	width: 100%;
+	font-size: 0.82em;
+	color: var(--qrcg-text);
+}
+
+.qrcg__link {
+	margin-top: 6px;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--qrcg-accent);
+	font-family: inherit;
+	font-size: 0.8em;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+/* --------------------------------------------------------------- Preview */
+
 .qrcg__result {
+	position: sticky;
+	top: 16px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	text-align: center;
+	padding: 18px;
+	border: 1px solid var(--qrcg-border);
+	border-radius: 10px;
+	background: var(--qrcg-panel);
 }
 
 .qrcg__canvas-wrap {
 	display: flex;
 	justify-content: center;
 	width: 100%;
-	min-height: 40px;
+	min-height: 60px;
 }
 
-.qrcg__canvas {
+.qrcg__canvas-wrap canvas,
+.qrcg__canvas-wrap svg,
+.qrcg__canvas-wrap img {
 	display: block;
 	max-width: 100%;
 	height: auto;
-	border-radius: 4px;
+	border-radius: 6px;
 }
 
 .qrcg__status {
-	margin: 0.75em 0 0;
-	font-size: 0.9em;
+	margin: 0.85em 0 0;
+	font-size: 0.85em;
 	color: var(--qrcg-muted);
 }
 
@@ -159,18 +267,19 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 10px;
-	margin-top: 1.25em;
+	margin-top: 1rem;
+	width: 100%;
 }
 
 .qrcg__btn {
-	display: inline-block;
-	padding: 10px 18px;
+	flex: 1 1 auto;
+	padding: 11px 16px;
 	border: 1px solid var(--qrcg-accent);
-	border-radius: 6px;
+	border-radius: 8px;
 	background: var(--qrcg-accent);
 	color: var(--qrcg-accent-text);
 	font-family: inherit;
-	font-size: 0.95em;
+	font-size: 0.92em;
 	font-weight: 600;
 	line-height: 1;
 	cursor: pointer;
@@ -186,22 +295,22 @@
 	color: var(--qrcg-accent);
 }
 
+/* ------------------------------------------------------------ Dark mode */
+
 @media (prefers-color-scheme: dark) {
 	.qrcg {
 		--qrcg-border: #3a3f45;
 		--qrcg-bg: #1e2226;
+		--qrcg-panel: #262b30;
 		--qrcg-text: #e8eaed;
 		--qrcg-muted: #a9b0b8;
 	}
 
 	.qrcg__input,
 	.qrcg__select,
-	.qrcg__color {
-		background: #262b30;
+	.qrcg__color,
+	.qrcg__chip {
+		background: #2f353b;
 		color: var(--qrcg-text);
-	}
-
-	.qrcg__controls {
-		background: rgba(255, 255, 255, 0.03);
 	}
 }
